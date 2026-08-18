@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { clearCart } from "./cartSlice";
 
-const API = "http://localhost:4000";
+const API = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 const authSlice = createSlice({
   name: "auth",
