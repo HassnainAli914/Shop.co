@@ -24,6 +24,10 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Backend running on Port: ${port}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`Backend running on Port: ${port}`);
+  });
+}
+
+module.exports = app;
