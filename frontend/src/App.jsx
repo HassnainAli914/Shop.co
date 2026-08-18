@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, removeProduct } from "./store/productsSlice";
-import { fetchCart, addToCart, removeFromCart, updateCartQty } from "./store/cartSlice";
+import { addToCart, removeFromCart, updateCartQty } from "./store/cartSlice";
 import { loginUser, signupUser, logoutUser } from "./store/authSlice";
 
 import Header from "./components/Header";
@@ -34,12 +34,6 @@ export default function App() {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (user?.uid) {
-      dispatch(fetchCart(user.uid));
-    }
-  }, [user, dispatch]);
-
   const handleSignup = async (email, password) => {
     await dispatch(signupUser(email, password));
     setAuthOpen(false);
@@ -61,20 +55,15 @@ export default function App() {
   };
 
   const handleAddToCart = (item) => {
-    if (!user) {
-      setAuthOpen(true);
-      return;
-    }
-    dispatch(addToCart(item, user.uid));
+    dispatch(addToCart(item));
   };
 
   const handleUpdateCartQty = (id, quantity) => {
-    dispatch(updateCartQty(id, quantity));
+    dispatch(updateCartQty({ id, quantity }));
   };
 
   const handleRemoveFromCart = (id) => {
-    if (!user) return;
-    dispatch(removeFromCart(id, user.uid));
+    dispatch(removeFromCart(id));
   };
 
   const handleSelectProduct = (prod) => {
