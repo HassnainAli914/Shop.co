@@ -1,13 +1,12 @@
 import * as React from "react"
 import { X } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 const SheetContext = React.createContext({
   open: false,
   setOpen: () => {},
 })
 
-const Sheet = ({ children, open: controlledOpen, onOpenChange }) => {
+export const Sheet = ({ children, open: controlledOpen, onOpenChange }) => {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
   const isControlled = controlledOpen !== undefined
   const open = isControlled ? controlledOpen : uncontrolledOpen
@@ -26,25 +25,26 @@ const Sheet = ({ children, open: controlledOpen, onOpenChange }) => {
   )
 }
 
-const SheetTrigger = ({ children, asChild, className, ...props }) => {
+export const SheetTrigger = ({ children, className = "", ...props }) => {
   const { setOpen } = React.useContext(SheetContext)
   return (
-    <div
+    <button
+      type="button"
       onClick={() => setOpen(true)}
-      className={cn("cursor-pointer inline-flex", className)}
+      className={`cursor-pointer inline-flex items-center justify-center ${className}`}
       {...props}
     >
       {children}
-    </div>
+    </button>
   )
 }
 
-const SheetClose = ({ children, className, ...props }) => {
+export const SheetClose = ({ children, className = "", ...props }) => {
   const { setOpen } = React.useContext(SheetContext)
   return (
     <div
       onClick={() => setOpen(false)}
-      className={cn("cursor-pointer inline-flex", className)}
+      className={`cursor-pointer ${className}`}
       {...props}
     >
       {children}
@@ -52,31 +52,28 @@ const SheetClose = ({ children, className, ...props }) => {
   )
 }
 
-const SheetContent = ({ side = "left", className, children, ...props }) => {
+export const SheetContent = ({ side = "left", className = "", children, ...props }) => {
   const { open, setOpen } = React.useContext(SheetContext)
 
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex">
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-[9999] flex">
       <div
-        className="fixed inset-0 bg-black/60 transition-opacity animate-in fade-in"
+        className="fixed inset-0 bg-black/60 transition-opacity backdrop-blur-sm"
         onClick={() => setOpen(false)}
       />
 
-      {/* Drawer */}
       <div
-        className={cn(
-          "relative z-50 bg-background p-6 shadow-lg transition duration-300 ease-in-out w-3/4 max-w-sm h-full overflow-y-auto flex flex-col",
-          side === "left" ? "mr-auto" : "ml-auto",
-          className
-        )}
+        className={`relative z-[10000] bg-white text-gray-900 p-6 shadow-2xl w-[280px] sm:w-[320px] h-full overflow-y-auto flex flex-col ${
+          side === "left" ? "mr-auto" : "ml-auto"
+        } ${className}`}
         {...props}
       >
         <button
+          type="button"
           onClick={() => setOpen(false)}
-          className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 p-1"
+          className="absolute right-4 top-4 p-1.5 text-gray-500 hover:text-black rounded-full hover:bg-gray-100 transition"
         >
           <X className="h-5 w-5" />
         </button>
@@ -86,24 +83,14 @@ const SheetContent = ({ side = "left", className, children, ...props }) => {
   )
 }
 
-const SheetHeader = ({ className, ...props }) => (
-  <div className={cn("flex flex-col space-y-2 text-left mb-4", className)} {...props} />
+export const SheetHeader = ({ className = "", ...props }) => (
+  <div className={`flex flex-col space-y-1 text-left mb-6 pb-4 border-b border-gray-100 ${className}`} {...props} />
 )
 
-const SheetTitle = ({ className, ...props }) => (
-  <h2 className={cn("text-lg font-semibold text-foreground", className)} {...props} />
+export const SheetTitle = ({ className = "", ...props }) => (
+  <h2 className={`text-xl font-extrabold text-black tracking-tight ${className}`} {...props} />
 )
 
-const SheetDescription = ({ className, ...props }) => (
-  <p className={cn("text-sm text-muted-foreground", className)} {...props} />
+export const SheetDescription = ({ className = "", ...props }) => (
+  <p className={`text-xs text-gray-500 ${className}`} {...props} />
 )
-
-export {
-  Sheet,
-  SheetTrigger,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-}
