@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, addProduct, removeProduct } from "./store/productsSlice";
+import { fetchProducts, removeProduct } from "./store/productsSlice";
 import { fetchCart, addToCart, removeFromCart, updateCartQty } from "./store/cartSlice";
 import { loginUser, signupUser, logoutUser } from "./store/authSlice";
 
@@ -17,7 +17,6 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import BrandsPage from "./pages/BrandsPage";
 import AuthModal from "./components/AuthModal";
-import AddProductModal from "./components/AddProductModal";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -29,7 +28,6 @@ export default function App() {
   const [currentView, setCurrentView] = useState("home");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [authOpen, setAuthOpen] = useState(false);
-  const [addProductOpen, setAddProductOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -55,24 +53,6 @@ export default function App() {
   const handleLogout = () => {
     dispatch(logoutUser());
     setCurrentView("home");
-  };
-
-  const handleAddProduct = async (name, price) => {
-    if (!user) {
-      setAuthOpen(true);
-      return;
-    }
-    await dispatch(
-      addProduct({
-        name,
-        price: Number(price),
-        userId: user.uid,
-        category: "tshirt",
-        image: "/images/might1.png",
-        description: "New store arrival",
-      })
-    );
-    setAddProductOpen(false);
   };
 
   const handleDeleteProduct = (productId) => {
@@ -122,9 +102,6 @@ export default function App() {
         onNavigate={handleNavigate}
         onOpenAuth={() => setAuthOpen(true)}
         onLogout={handleLogout}
-        onOpenAddProduct={() =>
-          user ? setAddProductOpen(true) : setAuthOpen(true)
-        }
         onSearch={setSearchQuery}
       />
 
@@ -189,12 +166,6 @@ export default function App() {
         onClose={() => setAuthOpen(false)}
         onLogin={handleLogin}
         onSignup={handleSignup}
-      />
-
-      <AddProductModal
-        isOpen={addProductOpen}
-        onClose={() => setAddProductOpen(false)}
-        onAddProduct={handleAddProduct}
       />
     </div>
   );

@@ -11,7 +11,6 @@ export default function Header({
   onNavigate,
   onOpenAuth,
   onLogout,
-  onOpenAddProduct,
   onSearch,
 }) {
   return (
@@ -53,7 +52,6 @@ export default function Header({
             </li>
           </ul>
 
-          {/* Search bar */}
           <div className="flex justify-start items-center lg:bg-[#F0F0F0] lg:w-[480px] h-[40px] pl-3 ml-4 md:ml-0 rounded-full">
             <IoIosSearch className="text-xl hidden lg:block text-gray-500" />
             <input
@@ -64,15 +62,6 @@ export default function Header({
           </div>
 
           <div className="flex space-x-3 sm:space-x-4 items-center">
-            {user && (
-              <button
-                onClick={onOpenAddProduct}
-                className="bg-black text-white text-xs px-3 py-1.5 rounded-full font-medium hover:bg-gray-800"
-              >
-                + Add Product
-              </button>
-            )}
-
             <button
               onClick={() => onNavigate("cart")}
               className="relative p-1 focus:outline-none"

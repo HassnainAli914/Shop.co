@@ -1,20 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clearCartItems } from "./cartSlice";
+import { clearCart } from "./cartSlice";
 
 const API = "http://localhost:4000";
-
-const initialUser = (() => {
-  try {
-    return JSON.parse(localStorage.getItem("user")) || null;
-  } catch {
-    return null;
-  }
-})();
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: initialUser,
+    user: JSON.parse(localStorage.getItem("user")) || null,
   },
   reducers: {
     setUser: (state, action) => {
@@ -37,9 +29,7 @@ export const signupUser = (email, password) => async (dispatch) => {
     body: JSON.stringify({ email, password }),
   });
   const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.error || "Signup failed");
-  }
+  if (!res.ok) throw new Error(data.error || "Signup failed");
   dispatch(setUser(data.user));
   return data.user;
 };
@@ -51,16 +41,14 @@ export const loginUser = (email, password) => async (dispatch) => {
     body: JSON.stringify({ email, password }),
   });
   const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.error || "Login failed");
-  }
+  if (!res.ok) throw new Error(data.error || "Login failed");
   dispatch(setUser(data.user));
   return data.user;
 };
 
 export const logoutUser = () => (dispatch) => {
   dispatch(clearUser());
-  dispatch(clearCartItems());
+  dispatch(clearCart());
 };
 
 export default authSlice.reducer;

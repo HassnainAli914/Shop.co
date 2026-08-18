@@ -41,9 +41,7 @@ export const addProduct = (productData) => async (dispatch) => {
     body: JSON.stringify(productData),
   });
   const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.error || "Failed to add product");
-  }
+  if (!res.ok) throw new Error(data.error || "Failed to add product");
   dispatch(addProductItem(data.product));
   return data.product;
 };
@@ -54,10 +52,7 @@ export const removeProduct = (id, userId) => async (dispatch) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId }),
   });
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.error || "Failed to remove product");
-  }
+  if (!res.ok) throw new Error("Failed to remove product");
   dispatch(removeProductItem(id));
 };
 

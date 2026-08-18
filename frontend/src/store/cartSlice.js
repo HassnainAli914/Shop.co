@@ -24,7 +24,7 @@ const cartSlice = createSlice({
         existing.quantity = Math.max(1, quantity);
       }
     },
-    clearCartItems: (state) => {
+    clearCart: (state) => {
       state.items = [];
     },
   },
@@ -35,7 +35,7 @@ export const {
   addToCartItem,
   removeFromCartItem,
   updateQtyItem,
-  clearCartItems,
+  clearCart,
 } = cartSlice.actions;
 
 export const fetchCart = (userId) => async (dispatch) => {
