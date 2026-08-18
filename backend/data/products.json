@@ -1,0 +1,166 @@
+[
+  {
+    "id": "1",
+    "name": "T-SHIRT WITH TAPE DETAILS",
+    "price": 120,
+    "discountPercent": 0,
+    "category": "tshirt",
+    "colors": [
+      "Black",
+      "Orange"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "image": "/images/might1.png",
+    "description": "This graphic t-shirt is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style."
+  },
+  {
+    "id": "2",
+    "name": "SKINNY FIT JEANS",
+    "price": 240,
+    "discountPercent": 20,
+    "category": "jeans",
+    "colors": [
+      "Blue"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "/images/might2.png",
+    "description": "Comfortable and stylish skinny fit jeans made with premium stretch denim."
+  },
+  {
+    "id": "3",
+    "name": "CHECKERED SHIRT",
+    "price": 180,
+    "discountPercent": 0,
+    "category": "shirt",
+    "colors": [
+      "Red",
+      "Blue"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "/images/might3.png",
+    "description": "Classic checkered pattern button-down shirt made with 100% breathable cotton."
+  },
+  {
+    "id": "4",
+    "name": "SLEEVE STRIPED T-SHIRT",
+    "price": 130,
+    "discountPercent": 30,
+    "category": "tshirt",
+    "colors": [
+      "Orange",
+      "Black"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XXL"
+    ],
+    "image": "/images/might4.png",
+    "description": "Casual t-shirt with signature striped sleeve detailing for a sporty everyday look."
+  },
+  {
+    "id": "5",
+    "name": "VERTICAL STRIPED SHIRT",
+    "price": 212,
+    "discountPercent": 20,
+    "category": "shirt",
+    "colors": [
+      "Green"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "/images/sell1.png",
+    "description": "Elegant vertical striped relaxed-fit shirt suitable for casual and semi-formal outings."
+  },
+  {
+    "id": "6",
+    "name": "COURAGE GRAPHIC T-SHIRT",
+    "price": 145,
+    "discountPercent": 0,
+    "category": "tshirt",
+    "colors": [
+      "Orange",
+      "Yellow"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "image": "/images/sell2.png",
+    "description": "Bold front graphic print t-shirt featuring contemporary typography and oversized fit."
+  },
+  {
+    "id": "7",
+    "name": "LOOSE FIT BERMUDA SHORTS",
+    "price": 80,
+    "discountPercent": 0,
+    "category": "short",
+    "colors": [
+      "Blue"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "/images/sell3.png",
+    "description": "Relaxed Bermuda shorts designed for summer comfort with durable washed denim."
+  },
+  {
+    "id": "8",
+    "name": "FADED SKINNY JEANS",
+    "price": 210,
+    "discountPercent": 0,
+    "category": "jeans",
+    "colors": [
+      "Black",
+      "Blue"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ],
+    "image": "/images/sell4.png",
+    "description": "Modern faded finish skinny jeans with reinforced stitching and five-pocket design."
+  },
+  {
+    "id": "1786999550943",
+    "name": "nnnn",
+    "price": 122,
+    "userId": "1786999419466",
+    "category": "tshirt",
+    "image": "/images/might1.png",
+    "description": "New store arrival",
+    "discountPercent": 0,
+    "colors": [
+      "Black",
+      "Blue"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ]
+  }
+]
