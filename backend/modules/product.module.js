@@ -1,4 +1,4 @@
-const supabase = require("../supabase");
+const supabase = require("../configs/supabase");
 
 const isSupabaseConfigured = () => {
   return process.env.SUPABASE_URL && process.env.SUPABASE_KEY;

@@ -1,5 +1,6 @@
 const express = require("express");
 const { createUser, loginUser } = require("../controllers/user.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -21,6 +22,10 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message || "Login failed" });
   }
+});
+
+router.get("/me", authMiddleware, (req, res) => {
+  res.status(200).json({ user: req.user });
 });
 
 module.exports = router;

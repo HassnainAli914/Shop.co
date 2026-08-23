@@ -1,5 +1,6 @@
 const express = require("express");
 const { addProduct, removeProduct, getProducts } = require("../controllers/product.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -12,8 +13,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
-  const { name, price, userId, category, image, description } = req.body;
+router.post("/add", authMiddleware, async (req, res) => {
+  const { name, price, category, image, description } = req.body;
+  const userId = req.user?.uid || req.body.userId;
   try {
     const product = await addProduct(name, price, userId, category, image, description);
     res.status(201).json({ message: "Product added successfully", product });
@@ -22,9 +24,9 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.delete("/remove/:id", async (req, res) => {
+router.delete("/remove/:id", authMiddleware, async (req, res) => {
   const { id } = req.params;
-  const { userId } = req.body;
+  const userId = req.user?.uid || req.body.userId;
   try {
     await removeProduct(id, userId);
     res.status(200).json({ message: "Product removed successfully" });

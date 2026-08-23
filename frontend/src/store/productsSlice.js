@@ -34,10 +34,14 @@ export const fetchProducts = () => async (dispatch) => {
   }
 };
 
-export const addProduct = (productData) => async (dispatch) => {
+export const addProduct = (productData) => async (dispatch, getState) => {
+  const token = getState().auth.user?.token;
   const res = await fetch(`${API}/products/add`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
     body: JSON.stringify(productData),
   });
   const data = await res.json();
@@ -46,10 +50,14 @@ export const addProduct = (productData) => async (dispatch) => {
   return data.product;
 };
 
-export const removeProduct = (id, userId) => async (dispatch) => {
+export const removeProduct = (id, userId) => async (dispatch, getState) => {
+  const token = getState().auth.user?.token;
   const res = await fetch(`${API}/products/remove/${id}`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
     body: JSON.stringify({ userId }),
   });
   if (!res.ok) throw new Error("Failed to remove product");
