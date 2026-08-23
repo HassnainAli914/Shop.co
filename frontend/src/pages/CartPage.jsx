@@ -68,14 +68,17 @@ export default function CartPage({
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-[80px] sm:w-[100px] h-[80px] sm:h-[100px] bg-[#F0EEED] rounded-2xl flex items-center justify-center p-2 shrink-0">
-                      <img
-                        src={item.image || `/images/might${(index % 4) + 1}.png`}
-                        alt={item.name}
-                        className="w-full h-full object-contain rounded-xl"
-                        onError={(e) => {
-                          e.target.src = `/images/might${(index % 4) + 1}.png`;
-                        }}
-                      />
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-contain rounded-xl"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 font-bold text-[10px]">
+                          No Image
+                        </div>
+                      )}
                     </div>
                     <div className="space-y-1">
                       <h3 className="font-bold text-sm sm:text-base text-gray-900 line-clamp-1">

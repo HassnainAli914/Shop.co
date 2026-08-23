@@ -237,17 +237,17 @@ export default function CasualPage({
                     className="cursor-pointer group relative"
                   >
                     <div className="w-full h-[180px] sm:h-[240px] md:h-[290px] bg-[#F0EEED] rounded-[20px] overflow-hidden flex items-center justify-center p-4">
-                      <img
-                        src={
-                          data.image ||
-                          `/images/might${(index % 4) + 1}.png`
-                        }
-                        alt={data.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 rounded-[20px]"
-                        onError={(e) => {
-                          e.target.src = `/images/might${(index % 4) + 1}.png`;
-                        }}
-                      />
+                      {data.image ? (
+                        <img
+                          src={data.image}
+                          alt={data.name}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 rounded-[20px]"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 rounded-[20px] flex items-center justify-center text-gray-400 font-bold text-xs">
+                          No Image
+                        </div>
+                      )}
                     </div>
                     <div className="pt-3">
                       <p className="text-sm sm:text-base font-bold truncate">

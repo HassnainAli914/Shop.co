@@ -34,9 +34,7 @@ export default function ProductDetailPage({
     );
   }
 
-  const [selectedImage, setSelectedImage] = useState(
-    product.image || "/images/might1.png"
-  );
+  const [selectedImage, setSelectedImage] = useState(product.image || "");
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || "Black"
   );
@@ -62,11 +60,7 @@ export default function ProductDetailPage({
     }
   };
 
-  const thumbs = [
-    product.image || "/images/might1.png",
-    "/images/arrival-img1.png",
-    "/images/arrival-img3.png",
-  ];
+  const thumbs = product.image ? [product.image] : [];
 
   return (
     <div className="mt-24 md:mt-28 lg:mt-32 max-w-screen-2xl mx-auto px-4">
@@ -77,36 +71,38 @@ export default function ProductDetailPage({
 
       <div className="flex h-full flex-col md:flex-row justify-center items-start gap-8 lg:gap-12 max-w-screen-xl mx-auto mt-6">
         <div className="w-full md:w-1/2 flex flex-col-reverse sm:flex-row gap-4">
-          <div className="flex sm:flex-col gap-3 justify-center">
-            {thumbs.map((src, i) => (
-              <div
-                key={i}
-                onClick={() => setSelectedImage(src)}
-                className={`w-[80px] sm:w-[110px] h-[80px] sm:h-[120px] bg-[#F0EEED] rounded-2xl overflow-hidden cursor-pointer border-2 transition-all p-2 flex items-center justify-center ${
-                  selectedImage === src ? "border-black" : "border-transparent"
-                }`}
-              >
-                <img
-                  src={src}
-                  alt="thumb"
-                  className="w-full h-full object-contain rounded-xl"
-                  onError={(e) => {
-                    e.target.src = "/images/might1.png";
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+          {thumbs.length > 1 && (
+            <div className="flex sm:flex-col gap-3 justify-center">
+              {thumbs.map((src, i) => (
+                <div
+                  key={i}
+                  onClick={() => setSelectedImage(src)}
+                  className={`w-[80px] sm:w-[110px] h-[80px] sm:h-[120px] bg-[#F0EEED] rounded-2xl overflow-hidden cursor-pointer border-2 transition-all p-2 flex items-center justify-center ${
+                    selectedImage === src ? "border-black" : "border-transparent"
+                  }`}
+                >
+                  <img
+                    src={src}
+                    alt="thumb"
+                    className="w-full h-full object-contain rounded-xl"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="flex-1 bg-[#F0EEED] rounded-3xl overflow-hidden h-[340px] sm:h-[420px] md:h-[480px] flex items-center justify-center p-6">
-            <img
-              src={selectedImage}
-              alt={product.name}
-              className="w-full h-full object-contain rounded-2xl"
-              onError={(e) => {
-                e.target.src = "/images/might1.png";
-              }}
-            />
+            {selectedImage ? (
+              <img
+                src={selectedImage}
+                alt={product.name}
+                className="w-full h-full object-contain rounded-2xl"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 rounded-2xl flex items-center justify-center text-gray-400 font-bold text-sm">
+                No Image
+              </div>
+            )}
           </div>
         </div>
 
@@ -143,8 +139,7 @@ export default function ProductDetailPage({
           </div>
 
           <p className="text-sm text-gray-600 leading-relaxed border-b border-gray-100 pb-5">
-            {product.description ||
-              "This quality garment is crafted from soft and breathable fabric, offering superior comfort and style."}
+            {product.description || "Quality product available on SHOP.CO"}
           </p>
 
           <div className="border-b border-gray-100 pb-5">
@@ -152,7 +147,7 @@ export default function ProductDetailPage({
               Select Colors
             </p>
             <div className="flex space-x-3">
-              {(product.colors || ["Black", "Blue", "Gray"]).map(
+              {(product.colors || ["Black", "Blue"]).map(
                 (color, i) => (
                   <button
                     key={i}
@@ -175,7 +170,7 @@ export default function ProductDetailPage({
               Choose Size
             </p>
             <div className="flex flex-wrap gap-2.5">
-              {(product.sizes || ["Small", "Medium", "Large", "X-Large"]).map(
+              {(product.sizes || ["S", "M", "L", "XL"]).map(
                 (sz) => (
                   <button
                     key={sz}
