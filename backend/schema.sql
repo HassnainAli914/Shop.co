@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS products (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+ALTER TABLE users DISABLE ROW LEVEL SECURITY;
+ALTER TABLE products DISABLE ROW LEVEL SECURITY;
+
 INSERT INTO products (id, name, price, "discountPercent", category, colors, sizes, image, description)
 VALUES
   ('1', 'T-SHIRT WITH TAPE DETAILS', 120, 0, 'tshirt', ARRAY['Black', 'Orange'], ARRAY['S', 'M', 'L'], '/images/might1.png', 'This graphic t-shirt is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.'),
