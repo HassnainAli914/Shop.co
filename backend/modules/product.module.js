@@ -1,20 +1,11 @@
 const supabase = require("../configs/supabase");
 
-const isSupabaseConfigured = () => {
-  return process.env.SUPABASE_URL && process.env.SUPABASE_KEY;
-};
-
-let localProducts = [];
-
 exports.getProducts = async () => {
-  if (isSupabaseConfigured()) {
-    const { data, error } = await supabase.from("products").select("*");
-    if (error || !data) {
-      return [];
-    }
-    return data;
+  const { data, error } = await supabase.from("products").select("*");
+  if (error || !data) {
+    return [];
   }
-  return localProducts;
+  return data;
 };
 
 exports.addProduct = async (name, price, userId, category = "tshirt", image = "", description = "") => {
@@ -31,25 +22,16 @@ exports.addProduct = async (name, price, userId, category = "tshirt", image = ""
     sizes: ["S", "M", "L", "XL"]
   };
 
-  if (isSupabaseConfigured()) {
-    const { data, error } = await supabase.from("products").insert([newProduct]).select();
-    if (error) throw new Error(error.message);
-    return data?.[0] || newProduct;
-  } else {
-    localProducts.push(newProduct);
-    return newProduct;
-  }
+  const { data, error } = await supabase.from("products").insert([newProduct]).select();
+  if (error) throw new Error(error.message);
+  return data?.[0] || newProduct;
 };
 
 exports.removeProduct = async (id, userId) => {
-  if (isSupabaseConfigured()) {
-    const { error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", id)
-      .eq("userId", userId);
-    if (error) throw new Error(error.message);
-  } else {
-    localProducts = localProducts.filter((p) => !(p.id === id && p.userId === userId));
-  }
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", id)
+    .eq("userId", userId);
+  if (error) throw new Error(error.message);
 };
