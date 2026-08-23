@@ -1,62 +1,49 @@
-const fs = require("fs");
-const path = require("path");
 const bcrypt = require("bcrypt");
+const supabase = require("../supabase");
 
-const filePath = path.join(process.cwd(), "data", "users.json");
-
-const readData = () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        if (err.code === "ENOENT") {
-          return resolve([]);
-        }
-        reject(err);
-      } else {
-        try {
-          const str = data.toString().trim();
-          resolve(str ? JSON.parse(str) : []);
-        } catch (e) {
-          resolve([]);
-        }
-      }
-    });
-  });
+const isSupabaseConfigured = () => {
+  return process.env.SUPABASE_URL && process.env.SUPABASE_KEY;
 };
 
-const writeData = (data) => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(filePath, JSON.stringify(data, null, 2), (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
+const localUsers = [];
 
 exports.createUser = async (email, password, uid) => {
-  try {
-    const users = await readData();
-    const matched = users.find((user) => user.email === email);
-    if (!!matched) {
+  if (isSupabaseConfigured()) {
+    const { data: existingUser } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (existingUser) {
       throw new Error("User Already Exists");
-    } else {
-      const hashedPass = await bcrypt.hash(password, 12);
-      await writeData([...users, { email, password: hashedPass, uid }]);
     }
-  } catch (error) {
-    throw error;
+
+    const hashedPass = await bcrypt.hash(password, 12);
+    const { error } = await supabase
+      .from("users")
+      .insert([{ email, password: hashedPass, uid }]);
+
+    if (error) throw new Error(error.message);
+  } else {
+    const matched = localUsers.find((user) => user.email === email);
+    if (matched) {
+      throw new Error("User Already Exists");
+    }
+    const hashedPass = await bcrypt.hash(password, 12);
+    localUsers.push({ email, password: hashedPass, uid });
   }
 };
 
 exports.findUser = async (email) => {
-  try {
-    const users = await readData();
-    const matched = users.find((user) => user.email === email);
-    return matched;
-  } catch (error) {
-    throw error;
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+    return data;
+  } else {
+    return localUsers.find((user) => user.email === email);
   }
 };

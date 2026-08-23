@@ -1,42 +1,114 @@
-const fs = require("fs");
-const path = require("path");
+const supabase = require("../supabase");
 
-const filePath = path.join(process.cwd(), "data", "products.json");
-
-const readData = () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        if (err.code === "ENOENT") {
-          return resolve([]);
-        }
-        reject(err);
-      } else {
-        try {
-          const str = data.toString().trim();
-          resolve(str ? JSON.parse(str) : []);
-        } catch (e) {
-          resolve([]);
-        }
-      }
-    });
-  });
+const isSupabaseConfigured = () => {
+  return process.env.SUPABASE_URL && process.env.SUPABASE_KEY;
 };
 
-const writeData = (data) => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(filePath, JSON.stringify(data, null, 2), (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
+const initialProducts = [
+  {
+    id: "1",
+    name: "T-SHIRT WITH TAPE DETAILS",
+    price: 120,
+    discountPercent: 0,
+    category: "tshirt",
+    colors: ["Black", "Orange"],
+    sizes: ["S", "M", "L"],
+    image: "/images/might1.png",
+    description: "This graphic t-shirt is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style."
+  },
+  {
+    id: "2",
+    name: "SKINNY FIT JEANS",
+    price: 240,
+    discountPercent: 20,
+    category: "jeans",
+    colors: ["Blue"],
+    sizes: ["S", "M", "L", "XL"],
+    image: "/images/might2.png",
+    description: "Comfortable and stylish skinny fit jeans made with premium stretch denim."
+  },
+  {
+    id: "3",
+    name: "CHECKERED SHIRT",
+    price: 180,
+    discountPercent: 0,
+    category: "shirt",
+    colors: ["Red", "Blue"],
+    sizes: ["M", "L", "XL"],
+    image: "/images/might3.png",
+    description: "Classic checkered pattern button-down shirt made with 100% breathable cotton."
+  },
+  {
+    id: "4",
+    name: "SLEEVE STRIPED T-SHIRT",
+    price: 130,
+    discountPercent: 30,
+    category: "tshirt",
+    colors: ["Orange", "Black"],
+    sizes: ["S", "M", "L", "XXL"],
+    image: "/images/might4.png",
+    description: "Casual t-shirt with signature striped sleeve detailing for a sporty everyday look."
+  },
+  {
+    id: "5",
+    name: "VERTICAL STRIPED SHIRT",
+    price: 212,
+    discountPercent: 20,
+    category: "shirt",
+    colors: ["Green"],
+    sizes: ["M", "L", "XL"],
+    image: "/images/sell1.png",
+    description: "Elegant vertical striped relaxed-fit shirt suitable for casual and semi-formal outings."
+  },
+  {
+    id: "6",
+    name: "COURAGE GRAPHIC T-SHIRT",
+    price: 145,
+    discountPercent: 0,
+    category: "tshirt",
+    colors: ["Orange", "Yellow"],
+    sizes: ["S", "M", "L"],
+    image: "/images/sell2.png",
+    description: "Bold front graphic print t-shirt featuring contemporary typography and oversized fit."
+  },
+  {
+    id: "7",
+    name: "LOOSE FIT BERMUDA SHORTS",
+    price: 80,
+    discountPercent: 0,
+    category: "short",
+    colors: ["Blue"],
+    sizes: ["S", "M", "L", "XL"],
+    image: "/images/sell3.png",
+    description: "Relaxed Bermuda shorts designed for summer comfort with durable washed denim."
+  },
+  {
+    id: "8",
+    name: "FADED SKINNY JEANS",
+    price: 210,
+    discountPercent: 0,
+    category: "jeans",
+    colors: ["Black", "Blue"],
+    sizes: ["M", "L", "XL"],
+    image: "/images/sell4.png",
+    description: "Modern faded finish skinny jeans with reinforced stitching and five-pocket design."
+  }
+];
+
+let localProducts = [...initialProducts];
+
+exports.getProducts = async () => {
+  if (isSupabaseConfigured()) {
+    const { data, error } = await supabase.from("products").select("*");
+    if (error || !data || data.length === 0) {
+      return initialProducts;
+    }
+    return data;
+  }
+  return localProducts;
 };
 
 exports.addProduct = async (name, price, userId, category = "tshirt", image = "/images/might1.png", description = "") => {
-  const products = await readData();
   const newProduct = {
     id: Date.now().toString(),
     name,
@@ -49,20 +121,26 @@ exports.addProduct = async (name, price, userId, category = "tshirt", image = "/
     colors: ["Black", "Blue"],
     sizes: ["S", "M", "L", "XL"]
   };
-  await writeData([...products, newProduct]);
-  return newProduct;
-};
 
-exports.getProducts = async () => {
-  return await readData();
+  if (isSupabaseConfigured()) {
+    const { data, error } = await supabase.from("products").insert([newProduct]).select();
+    if (error) throw new Error(error.message);
+    return data?.[0] || newProduct;
+  } else {
+    localProducts.push(newProduct);
+    return newProduct;
+  }
 };
 
 exports.removeProduct = async (id, userId) => {
-  const products = await readData();
-  const productExists = products.find(p => p.id === id && p.userId === userId);
-  if (!productExists) {
-    throw new Error("Product not found or unauthorized");
+  if (isSupabaseConfigured()) {
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", id)
+      .eq("userId", userId);
+    if (error) throw new Error(error.message);
+  } else {
+    localProducts = localProducts.filter((p) => !(p.id === id && p.userId === userId));
   }
-  const filteredProducts = products.filter(p => !(p.id === id && p.userId === userId));
-  await writeData(filteredProducts);
 };
