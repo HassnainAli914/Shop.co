@@ -8,8 +8,6 @@ dist/
 dist-ssr/
 
 # Environment files
-.env
-.env.local
 .env.*.local
 */.env
 
@@ -32,3 +30,4 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+config.bat
