@@ -173,7 +173,7 @@ export default function CartPage({
             </div>
 
             <Button
-              onClick={() => alert(`Proceeding to checkout with Total: $${total.toFixed(2)}`)}
+              onClick={() => onNavigate && onNavigate("checkout")}
               className="w-full rounded-full bg-black text-white py-6 text-sm font-semibold hover:bg-gray-800 shadow-md transition"
             >
               Go to Checkout →

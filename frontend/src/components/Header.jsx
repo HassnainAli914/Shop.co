@@ -63,6 +63,13 @@ export default function Header({
 
           <div className="flex space-x-3 sm:space-x-4 items-center">
             <button
+              onClick={() => onNavigate("orders")}
+              className="text-xs sm:text-sm font-bold text-gray-800 hover:text-black hover:underline"
+            >
+              My Orders
+            </button>
+
+            <button
               onClick={() => onNavigate("cart")}
               className="relative p-1 focus:outline-none"
             >

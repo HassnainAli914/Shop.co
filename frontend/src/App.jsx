@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts, removeProduct } from "./store/productsSlice";
-import { addToCart, removeFromCart, updateCartQty } from "./store/cartSlice";
+import { addToCart, removeFromCart, updateCartQty, clearCart } from "./store/cartSlice";
 import { loginUser, signupUser, logoutUser } from "./store/authSlice";
 
 import Header from "./components/Header";
@@ -15,6 +15,8 @@ import Footer from "./components/Footer";
 import CasualPage from "./pages/CasualPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 import BrandsPage from "./pages/BrandsPage";
 import AuthModal from "./components/AuthModal";
 
@@ -64,6 +66,10 @@ export default function App() {
 
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id));
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
 
   const handleSelectProduct = (prod) => {
@@ -139,6 +145,22 @@ export default function App() {
             cart={cart}
             onUpdateQty={handleUpdateCartQty}
             onRemoveItem={handleRemoveFromCart}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentView === "checkout" && (
+          <CheckoutPage
+            cart={cart}
+            user={user}
+            onClearCart={handleClearCart}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {currentView === "orders" && (
+          <MyOrdersPage
+            user={user}
             onNavigate={handleNavigate}
           />
         )}
