@@ -6,9 +6,9 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 export default defineConfig(({ mode }) => {
-    // depending on your application, base can also be "/"
+    // default base to "/"
     const env = loadEnv(mode, process.cwd(), '');
-    const API_URL = `${env.VITE_APP_BASE_NAME}`;
+    const BASE_URL = env.VITE_APP_BASE_NAME || '/';
     const PORT = 3000;
 
     return {
@@ -47,7 +47,7 @@ export default defineConfig(({ mode }) => {
                 '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs'
             }
         },
-        base: API_URL,
+        base: BASE_URL,
         plugins: [react(), jsconfigPaths()]
     };
 });
